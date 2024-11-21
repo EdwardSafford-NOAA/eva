@@ -12,7 +12,8 @@
 
 import numpy as np
 import xarray as xr
-
+from eva.data.data_collections import DataCollections
+from eva.time_series.time_series_utils import create_empty_data
 
 # --------------------------------------------------------------------------------------------------
 
@@ -21,6 +22,17 @@ xr_aggregation_methods = {
     'mean': lambda ds, dim: ds.mean(dim=dim, skipna=True),
     'sum': lambda ds, dim: ds.sum(dim=dim, skipna=True),
 }
+
+
+# --------------------------------------------------------------------------------------------------
+
+def add_empty_to_timeseries(logger, date, ind, timing, time_series_config,
+                            dataset_config, data_collections):
+
+    ''' Add empty collection to timeseries for missing date  '''
+    empty_data_collection = create_empty_data(time_series_config, dataset_config, timing, logger)
+    collapse_collection_to_time_series(logger, ind, date, time_series_config, data_collections,
+                                       empty_data_collection)
 
 
 # --------------------------------------------------------------------------------------------------
